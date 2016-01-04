@@ -52,5 +52,7 @@ class NewVisitorTest(unittest.TestCase): #extend unittest
         #she visits that URL - her to do list is still there.
 
         #Satisfied, she goes back to sleep
+        self.fail('Finish the app!')
+        
 if __name__== '__main__':
     unittest.main()
