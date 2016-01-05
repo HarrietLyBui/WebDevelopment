@@ -33,11 +33,11 @@ class NewVisitorTest(unittest.TestCase): #extend unittest
         #She notices the page title and header mention to-do list
         #assert 'To-Do' in browser.title #make Django show up on the page
 
-        self.assertIn('To-Do',self.browser.title)
+        self.assertIn('To-do',self.browser.title)
         #find the h1 text on the text, got the text and look for To-do word
         #in the text
         header_text = self.browser.find_element_by_tag_name('h1').text
-        self.assertIn('To-Do',header_text)
+        self.assertIn('To-do',header_text)
 
         #She is invited to endter a to-do item straight away
 
@@ -57,10 +57,8 @@ class NewVisitorTest(unittest.TestCase): #extend unittest
         inputbox.send_keys(Keys.ENTER)
 
         table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_element_by_tag_name('tr')
-        self.assertTrue(
-            any()
-        )
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn('1. Buy peacock feathers', [row.text for row in rows])
 
         #There is still a text box inviting her to add aanother item#
         #She enters "Use peacock feathers to make fly"
