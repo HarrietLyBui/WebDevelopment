@@ -26,6 +26,12 @@ class HomePageTest(TestCase):
         #self.assertIn('<title>To-do list</title>',response.content)
         #self.assertTrue(response.content.strip().endswith('</html>'))
 
+    def test_home_page_doesnt_save_on_GET_request(self):
+        request = HttpRequest()
+        home_page(request)
+        self.assertEqual(Item.objects.count(),0)
+
+"""
     def test_home_page_can_save_a_POST_request(self):
         request = HttpRequest()
         request.method = 'POST'
@@ -46,7 +52,7 @@ class HomePageTest(TestCase):
         #redirect the request
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['location'], '/lists/the-only-list/')
-
+"""
     #    self.assertIn('A new list item', response.content.decode())
         #render call
     #    expected_html = render_to_string(
@@ -56,10 +62,30 @@ class HomePageTest(TestCase):
     #    )
     #    self.assertEqual(response.content.decode(), expected_html)
 
-    def test_home_page_doesnt_save_on_GET_request(self):
-            request = HttpRequest()
-            home_page(request)
-            self.assertEqual(Item.objects.count(),0)
+
+class NewListTest(TestCase):
+
+    def test_saving_a_POST_request(self):
+            self.client.post(
+            '/lists/new',
+            data={'item_text': 'A new list item'}
+            )
+            self.assertEqual(Item.objects.count(), 1)
+            new_item = Item.objects.first()
+            self.assertEqual(new_item.text, 'A new list item')
+
+
+    def test_redirects_after_POST(self):
+            response = self.client.post(
+            '/lists/new',
+            data={'item_text': 'A new list item'}
+            )
+            self.assertRedirects(response, '/lists/the-only-list/')
+
+
+
+
+
 
 class ListViewTest(TestCase):
 
@@ -71,6 +97,7 @@ class ListViewTest(TestCase):
 
         self.assertContains(response, "itemey 1")
         self.assertContains(response, "itemey 2")
+
 
 class ItemModelTest(TestCase):
     def test_saving_and_retrieving_item(self):
