@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect 
+from django.shortcuts import render, redirect
 from lists.models import Item
 
 # Create your views here.
@@ -9,7 +9,7 @@ def home_page(request):
         Item.objects.create(text=request.POST['item_text'])
         #new_item_text = request.POST['item_text']
         #Item.objects.create(text=new_item_text)
-        return redirect ('/')
+        return redirect('/lists/the-only-list/')
 
     #else:
     #    new_item_text = ''
@@ -22,11 +22,7 @@ def home_page(request):
     #create new item everytime we go to homepage so that is very bad
     items = Item.objects.all()
 
-    return render(request, 'home.html', {
-        'items': items,
-
-        # request.POST.get('item_text',''),
-    })
+    return render(request, 'home.html')
 
     #this will break the functional test so don't do this
     #if request.method == 'POST':
@@ -35,3 +31,7 @@ def home_page(request):
 
 
     # but in home folder home/home.html
+
+def view_list(request):
+    items = Item.objects.all()
+    return render(request, 'list.html', {'items': items})
