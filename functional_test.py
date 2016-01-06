@@ -9,6 +9,8 @@ class NewVisitorTest(unittest.TestCase): #extend unittest
         self.browser = webdriver.Firefox() #open firefox before any test
         self.browser.implicitly_wait(3) #if nothing happens, wait three second and close
 
+
+
     def tearDown(self):
 
         self.browser.quit() #close the browser after every test
@@ -16,6 +18,12 @@ class NewVisitorTest(unittest.TestCase): #extend unittest
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
         self.assertIn(row_text, [row.text for row in rows])
+
+    def enter_a_new_item(self, todo_text):
+        inputbox = self.browser.find_element_by_id('id_new_item') #create an input box
+        inputbox.send_keys(todo_text) #get user input
+        inputbox.send_keys(Keys.ENTER) #automatically press enter
+
     #Now we refractor the above code
     def test_can_start_a_list_and_retrieve_it_later(self):
 
@@ -51,14 +59,13 @@ class NewVisitorTest(unittest.TestCase): #extend unittest
             'Enter a to-do item'
         )
         #Shy types "Buy peacock feathers" into a text box
+        self.enter_a_new_item('Buy peacock feathers')
         #(Edith's hobby is tying fly-fishing lures)
 
-        inputbox.send_keys('Buy peacock feathers')
 
         #when she hits enter, the page udates, and now the page lists
         # 1. Buy peacock feathers" as an item in a to-do lists
 
-        inputbox.send_keys(Keys.ENTER)
 
         #table = self.browser.find_element_by_id('id_list_table')
         #rows = table.find_elements_by_tag_name('tr')
@@ -68,9 +75,9 @@ class NewVisitorTest(unittest.TestCase): #extend unittest
         #There is still a text box inviting her to add aanother item#
         #She enters "Use peacock feathers to make fly"
         #Edith is methodoical
-        inputbox = self.browser.find_element_by_id('id_new_item')
-        inputbox.send_keys('Use peacock feathers to make fly')
-        inputbox.send_keys(Keys.ENTER)
+
+
+        self.enter_a_new_item('Use peacock feathers to make a fly')
 
         #The homepage updates again, and now shows both items on her lists
 
