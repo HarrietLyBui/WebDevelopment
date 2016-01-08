@@ -1,9 +1,9 @@
 <html>
   <head>
-    <title>To-do list</title>
+    <title>Your To-do list</title>
   </head>
   <body>
-    <h1> To-do list </h1>
+    <h1> Your To-do list </h1>
     <form method="POST"  action="/lists/{{list.id}}/add_item">
       <input id="id_new_item" name="item_text" placeholder="Enter a to-do item" />
     {% csrf_token %}

@@ -25,24 +25,41 @@ class NewVisitorTest(LiveServerTestCase): #extend unittest
         inputbox.send_keys(todo_text) #get user input
         inputbox.send_keys(Keys.ENTER) #automatically press enter
 
+    def test_layout_and_styling(self):
+        #Edith goes to homepage
+        self.browser.set_window_size(1024,768) #set size
+        self.browser.get(self.live_server_url)
+
+        #She notices the input box is nicely check_input_box_is_centered
+        self.check_input_box_is_centered()
+
+
+
+
+    def check_input_box_is_centered(self):
+        #She notices the input box is nicely center
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(
+            inputbox.location['x'] + (inputbox.size['width']/2),
+            512,
+            delta=5
+
+            #rounding error
+            #in selenium is easier to do the divide by 2 so we choose this
+        )
+
+
     #Now we refractor the above code
     def test_can_start_a_list_and_retrieve_it_later(self):
-
         #    def test_can_log_in_to_a_new_account(self):
         #Edith has heard about a coll new online to-do app.
         #She goes to check out its homepage.
-
-
         self.browser.get(self.live_server_url) #go to a homepage
-
-
 
         #assert 'To-Do' in browser.title
         #this code does the same thing with line 5
         #if ! 'Django' in browser.title:
-            #throw new AssertionError
-
-
+        #throw new AssertionError
         #She notices the page title and header mention to-do list
         #assert 'To-Do' in browser.title #make Django show up on the page
 
@@ -71,20 +88,14 @@ class NewVisitorTest(LiveServerTestCase): #extend unittest
         edith_list_url = self.browser.current_url
         self.assertRegexpMatches(edith_list_url, '/lists/.+')
         self.check_for_row_in_list_table('1: Buy peacock feathers')
-
-
         #table = self.browser.find_element_by_id('id_list_table')
         #rows = table.find_elements_by_tag_name('tr')
-    #    self.assertIn('1. Buy peacock feathers', [row.text for row in rows])
-    #Now we refractor the above code
-        self.check_for_row_in_list_table('1: Buy peacock feathers')
+        #    self.assertIn('1. Buy peacock feathers', [row.text for row in rows])
+        #Now we refractor the above code
         #There is still a text box inviting her to add aanother item#
         #She enters "Use peacock feathers to make fly"
         #Edith is methodoical
-
-
         self.enter_a_new_item('Use peacock feathers to make a fly')
-
         #The homepage updates again, and now shows both items on her lists
 
         table = self.browser.find_element_by_id('id_list_table')
@@ -92,8 +103,8 @@ class NewVisitorTest(LiveServerTestCase): #extend unittest
 
         self.check_for_row_in_list_table('1: Buy peacock feathers')
         self.check_for_row_in_list_table('2: Use peacock feathers to make a fly')
-    #    self.assertIn('1. Buy peacock feathers', [row.text for row in rows])
-    #    self.assertIn('2. Use peacock feathers to make fly', [row.text for row in rows])
+        #    self.assertIn('1. Buy peacock feathers', [row.text for row in rows])
+        #    self.assertIn('2. Use peacock feathers to make fly', [row.text for row in rows])
 
         #Now a new user, Francis, comes along
 
@@ -122,7 +133,7 @@ class NewVisitorTest(LiveServerTestCase): #extend unittest
         #There is still no trace of Edith's list
         page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('Buy peacock feathers', page_text)
-        self.asssertIn('Buy milk', page_text)
+        self.assertIn('Buy milk', page_text)
 
         #Statisfy they both go to sleep
 
@@ -134,4 +145,4 @@ class NewVisitorTest(LiveServerTestCase): #extend unittest
         #she visits that URL - her to do list is still there.
 
         #Satisfied, she goes back to sleep
-        self.fail('Finish the app!')
+        # self.fail('Finish the app!')
