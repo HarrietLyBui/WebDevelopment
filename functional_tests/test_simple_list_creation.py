@@ -1,55 +1,7 @@
-# from django.test import LiveServerTestCase
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+from .base import TodoFunctionalTest
 
-
-class NewVisitorTest(StaticLiveServerTestCase): #extend unittest
-
-    def setUp(self): #method within class
-
-        self.browser = webdriver.Firefox() #open firefox before any test
-        self.browser.implicitly_wait(3) #if nothing happens, wait three second and close
-
-
-
-    def tearDown(self):
-
-        self.browser.quit() #close the browser after every test
-    def check_for_row_in_list_table(self, row_text):
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn(row_text, [row.text for row in rows])
-
-    def enter_a_new_item(self, todo_text):
-        inputbox = self.browser.find_element_by_id('id_new_item') #create an input box
-        inputbox.send_keys(todo_text) #get user input
-        inputbox.send_keys(Keys.ENTER) #automatically press enter
-
-    def test_layout_and_styling(self):
-        #Edith goes to homepage
-        self.browser.set_window_size(1024,768) #set size
-        self.browser.get(self.live_server_url)
-
-        #She notices the input box is nicely check_input_box_is_centered
-        self.check_input_box_is_centered()
-
-
-
-
-    def check_input_box_is_centered(self):
-        #She notices the input box is nicely center
-        inputbox = self.browser.find_element_by_id('id_new_item')
-        self.assertAlmostEqual(
-            inputbox.location['x'] + (inputbox.size['width']/2),
-            512,
-            delta=5
-
-            #rounding error
-            #in selenium is easier to do the divide by 2 so we choose this
-        )
-
-
+class NewVisitorTest(TodoFunctionalTest):
     #Now we refractor the above code
     def test_can_start_a_list_and_retrieve_it_later(self):
         #    def test_can_log_in_to_a_new_account(self):
