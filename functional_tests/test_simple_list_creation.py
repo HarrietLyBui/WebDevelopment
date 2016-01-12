@@ -45,6 +45,9 @@ class NewVisitorTest(TodoFunctionalTest):
         #rows = table.find_elements_by_tag_name('tr')
         #    self.assertIn('1. Buy peacock feathers', [row.text for row in rows])
         #Now we refractor the above code
+
+        #There is a Delete button next to her to-do list
+        
         #There is still a text box inviting her to add aanother item#
         #She enters "Use peacock feathers to make fly"
         #Edith is methodoical
