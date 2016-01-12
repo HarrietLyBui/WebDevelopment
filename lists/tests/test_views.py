@@ -170,3 +170,13 @@ class ListViewTest(TestCase):
             data={'item_text': ''}
         )
         self.assertEqual(Item.objects.count(),0)
+
+    def test_delete_items(self):
+        new_list = List.objects.create()
+        item1 = Item.objects.create(text="itemey 1", list=new_list)
+        item2 = Item.objects.create(text="itemey 2", list=new_list)
+
+        response = self.client.get('/lists/%d/%d/delete_item' % (new_list.id,item1.id))
+
+
+        self.assertEqual(Item.objects.count(),1)

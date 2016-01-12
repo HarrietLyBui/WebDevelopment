@@ -24,3 +24,5 @@ class TodoFunctionalTest(StaticLiveServerTestCase): #extend unittest
         inputbox = self.browser.find_element_by_id('id_new_item') #create an input box
         inputbox.send_keys(todo_text) #get user input
         inputbox.send_keys(Keys.ENTER) #automatically press enter
+
+    
