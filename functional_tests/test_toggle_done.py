@@ -1,4 +1,6 @@
 from .base import TodoFunctionalTest
+from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 
 
 class ToggleDoneTest(TodoFunctionalTest):
@@ -6,10 +8,15 @@ class ToggleDoneTest(TodoFunctionalTest):
     def toggle_todo_done(self, todo_text):
         row = self.find_table_row(todo_text) #find row
         row.find_element_by_tag_name('input').click() #click on input box
-        self.browser.find_element_by_id('toggle done') #click toggle done button
+        self.browser.find_element_by_id('toggle_done').click() #click toggle done button
 
     def check_marked_off(self, todo_text):
-        pass
+        row = self.find_table_row(todo_text)
+        try:
+            row.find_elements_by_css_selector('.todo-done')
+        except NoSuchElementException:
+            self.fail("%s not marked done!" % (todo_text))
+
 
     def test_can_toggle_finished_items(self):
         #go to the website:
@@ -30,6 +37,8 @@ class ToggleDoneTest(TodoFunctionalTest):
         #and marks them done on the todo list
 
         self.toggle_todo_done('Buy peacock feathers')
+        import time
+        time.sleep(10)
         self.toggle_todo_done('Buy fishing line')
 
         #Edith returns home, re-opens her todo list

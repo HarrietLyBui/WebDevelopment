@@ -10,7 +10,8 @@
       <td><input type="checkbox"
                   name="make_item_done"
                   value="{{item.id}}" /></td>
-      <td>{{item.text}}</td>
+      <td {% if item.is_done %}class="todo-done"{% endif %}>
+        {{item.text}}</td>
       <td><a href = "/lists/{{list.id}}/{{item.id}}/delete_item">Delete</a> </td></tr>
     {% endfor %}
   </table>
