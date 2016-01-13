@@ -9,7 +9,7 @@ class DeleteItemTest(TodoFunctionalTest):
         self.user_chooses_to_delete('Itemey 1 to delete')#delete an item
 
         import time
-        #time.sleep(10)
+        # time.sleep(10)
         page = self.browser.find_element_by_tag_name('body')
         self.assertNotIn('Itemey 1 to delete', page.text )
 
