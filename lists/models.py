@@ -7,3 +7,4 @@ class List(models.Model):
 class Item(models.Model):
     text = models.TextField(default='') #tell Django we have an item text and it contains string of data
     list = models.ForeignKey(List, default=None)
+    is_done = models.BooleanField(default=False)
