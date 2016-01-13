@@ -25,7 +25,7 @@ class ToggleDoneTest(TodoFunctionalTest):
         #noticing a checkbox to toggle done items.
         self.browser.get(self.live_server_url)
         self.enter_a_new_item('Buy peacock feathers')
-        self.enter_a_new_item('Buy finshing line')
+        self.enter_a_new_item('Buy fishing line')
 
         #find all input text whose type attribute is checkbox in css
         checkbox_selector = 'input[type="checkbox"]'
@@ -37,20 +37,18 @@ class ToggleDoneTest(TodoFunctionalTest):
         #and marks them done on the todo list
 
         self.toggle_todo_done('Buy peacock feathers')
-        import time
-        time.sleep(10)
         self.toggle_todo_done('Buy fishing line')
 
         #Edith returns home, re-opens her todo list
         #And sees that her shopping list is still marked.
         #and crossed off
 
-        current_list_url = self.browser.current_list_url
+        current_list_url = self.browser.current_url
         self.browser.quit()
         self.browser = webdriver.Firefox()
         self.browser.get(current_list_url)
         self.check_marked_off('Buy peacock feathers')
-        self.check_marked_off('Buy fiishing line')
+        self.check_marked_off('Buy fishing line')
 
 
         #She adds a note to tie her flys
