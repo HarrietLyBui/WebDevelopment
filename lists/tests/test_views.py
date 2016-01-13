@@ -125,7 +125,7 @@ class NewListTest(TestCase):
 #class NewItemTest(TestCase):
 
 class ListViewTest(TestCase):
-
+    
     def test_displays_only_items(self):
         new_list = List.objects.create()
         Item.objects.create(text="itemey 1", list=new_list)
@@ -180,3 +180,16 @@ class ListViewTest(TestCase):
 
 
         self.assertEqual(Item.objects.count(),1)
+
+    def test_list_view_displays_checkbox(self):
+        current_list = List.objects.create()
+        Item.objects.create(text="Item 1", list=current_list)
+        Item.objects.create(text="Item 2", list=current_list)
+
+        response = self.client.get('/lists/%d/' % (current_list.id,))
+
+        self.assertContains(response, 'input type="checkbox"')
+
+    #test if we POST to the toggle URL
+    def test_POST_items_toggles_done(self):
+        pass
