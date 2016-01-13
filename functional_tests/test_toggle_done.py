@@ -4,7 +4,7 @@ from .base import TodoFunctionalTest
 class ToggleDoneTest(TodoFunctionalTest):
     #helper method
     def toggle_todo_done(self, todo_text):
-        self.find_table_row(todo_text) #find row
+        row = self.find_table_row(todo_text) #find row
         row.find_element_by_tag_name('input').click() #click on input box
         self.browser.find_element_by_id('toggle done') #click toggle done button
 

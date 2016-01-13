@@ -40,14 +40,14 @@ class NewVisitorTest(TodoFunctionalTest):
 
         edith_list_url = self.browser.current_url
         self.assertRegexpMatches(edith_list_url, '/lists/.+')
-        self.check_for_row_in_list_table('1: Buy peacock feathers')
+        self.check_for_row_in_list_table('Buy peacock feathers')
         #table = self.browser.find_element_by_id('id_list_table')
         #rows = table.find_elements_by_tag_name('tr')
         #    self.assertIn('1. Buy peacock feathers', [row.text for row in rows])
         #Now we refractor the above code
 
         #There is a Delete button next to her to-do list
-        
+
         #There is still a text box inviting her to add aanother item#
         #She enters "Use peacock feathers to make fly"
         #Edith is methodoical
@@ -57,8 +57,8 @@ class NewVisitorTest(TodoFunctionalTest):
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
 
-        self.check_for_row_in_list_table('1: Buy peacock feathers')
-        self.check_for_row_in_list_table('2: Use peacock feathers to make a fly')
+        self.check_for_row_in_list_table('Buy peacock feathers')
+        self.check_for_row_in_list_table('Use peacock feathers to make a fly')
         #    self.assertIn('1. Buy peacock feathers', [row.text for row in rows])
         #    self.assertIn('2. Use peacock feathers to make fly', [row.text for row in rows])
 
