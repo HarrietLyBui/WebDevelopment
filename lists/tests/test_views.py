@@ -22,6 +22,19 @@ class HomePageTest(TestCase):
         expected_html = render_to_string('home.html')
         self.assertEqual(response.content.decode(), expected_html)
 
+    def test_home_page_has_todo_lists(self):
+        list1 = List.objects.create(name="List 1")
+        list2 = List.objects.create(name="List 2")
+        response = self.client.get('/')
+
+        context = response.context['todo_lists']
+        self.assertEqual(len(context),2)
+        self.assertEqual(context[0],list1)
+        self.assertEqual(context[1],list2)
+
+        #response.context homepage is rendered using all content at the end of render function
+        #self.assertListEqual(response.context['todo_lists'], List.objects.all())
+
         #self.assertTrue(response.content.startswith('<html>'))
         #self.assertIn('<title>To-do list</title>',response.content)
         #self.assertTrue(response.content.strip().endswith('</html>'))
@@ -181,7 +194,6 @@ class ListViewTest(TestCase):
 
         self.assertEqual(Item.objects.count(),1)
 
-<<<<<<< HEAD
     def test_edit_list_name(self):
         current_list = List.objects.create()
 
@@ -191,7 +203,7 @@ class ListViewTest(TestCase):
         )
 
         self.assertEqual(List.objects.first().name, 'New List')
-=======
+
     def test_list_view_displays_checkbox(self):
         current_list = List.objects.create()
         Item.objects.create(text="Item 1", list=current_list)
@@ -201,86 +213,88 @@ class ListViewTest(TestCase):
 
         self.assertContains(response, 'input type="checkbox"')
 
-    #test if we POST to the toggle URL
-    def test_POST_items_toggles_done(self):
-        #Create list and items
-        current_list = List.objects.create()
-        item1 = Item.objects.create(text="Item 1", list=current_list)
-        item2 = Item.objects.create(text="Item 2", list=current_list)
-        #POST data
-        response = self.client.post(
-            '/lists/%d/items/' % (current_list.id,),
-            data={'mark_item_done': item1.id}
-        )
 
-        #include toggle item
+class EditListTest(TestCase):
 
-        self.assertRedirects(response,'/lists/%d/' % (current_list.id,))
-        #check item is updated
-        item1 = Item.objects.get(id=item1.id)
-        item2 = Item.objects.get(id=item2.id)
-
-        self.assertTrue(item1.is_done) #check item is done
-        self.assertFalse(item2.is_done)
-
-    def test_POST_multiple_items_done(self):
-        current_list = List.objects.create()
-        item1 = Item.objects.create(text="Item 1", list=current_list)
-        item2 = Item.objects.create(text="Item 2", list=current_list)
-
-        response = self.client.post(
-            '/lists/%d/items/' % (current_list.id,),
-            data={'mark_item_done': [item1.id, item2.id]}
-        )
-
-        item1 = Item.objects.get(id=item1.id)
-        item2 = Item.objects.get(id=item2.id)
-
-        self.assertTrue(item1.is_done)
-        self.assertTrue(item2.is_done)
-
-    #didnot mark any checkbox but still hit Mark Done button
-    #mark item done is not in there
-    def test_POST_zero_items_done(self):
-        current_list = List.objects.create()
-        item1 = Item.objects.create(text="Item 1", list=current_list)
-        item2 = Item.objects.create(text="Item 2", list=current_list)
-
-        response = self.client.post(
-            '/lists/%d/items/' % (current_list.id,),
-            data={}
-        )
-
-        item1 = Item.objects.get(id=item1.id)
-        item2 = Item.objects.get(id=item2.id)
-
-        self.assertFalse(item1.is_done)
-        self.assertFalse(item2.is_done)
-
-    def test_POST_item_toggles_done(self):
-        current_list = List.objects.create()
-        item1 = Item.objects.create(
-            text="Item 1",
-            list=current_list,
-            is_done=True
+        #test if we POST to the toggle URL
+        def test_POST_items_toggles_done(self):
+            #Create list and items
+            current_list = List.objects.create()
+            item1 = Item.objects.create(text="Item 1", list=current_list)
+            item2 = Item.objects.create(text="Item 2", list=current_list)
+            #POST data
+            response = self.client.post(
+                '/lists/%d/items/' % (current_list.id,),
+                data={'mark_item_done': item1.id}
             )
 
-        item2 = Item.objects.create(
-            text="Item 2",
-            list=current_list,
-            is_done=False
-        )
+            #include toggle item
 
-        response = self.client.post(
-            '/lists/%d/items/' % (current_list.id,),
-            data={'mark_item_done': [item2.id]}
-        )
+            self.assertRedirects(response,'/lists/%d/' % (current_list.id,))
+            #check item is updated
+            item1 = Item.objects.get(id=item1.id)
+            item2 = Item.objects.get(id=item2.id)
 
-        self.assertRedirects(response,'/lists/%d/' % (current_list.id,))
+            self.assertTrue(item1.is_done) #check item is done
+            self.assertFalse(item2.is_done)
 
-        #Check item is updated
-        item1 = Item.objects.get(id=item1.id)
-        item2 = Item.objects.get(id=item2.id)
-        self.assertFalse(item1.is_done)
-        self.assertTrue(item2.is_done)
->>>>>>> master
+        def test_POST_multiple_items_done(self):
+            current_list = List.objects.create()
+            item1 = Item.objects.create(text="Item 1", list=current_list)
+            item2 = Item.objects.create(text="Item 2", list=current_list)
+
+            response = self.client.post(
+                '/lists/%d/items/' % (current_list.id,),
+                data={'mark_item_done': [item1.id, item2.id]}
+            )
+
+            item1 = Item.objects.get(id=item1.id)
+            item2 = Item.objects.get(id=item2.id)
+
+            self.assertTrue(item1.is_done)
+            self.assertTrue(item2.is_done)
+
+        #didnot mark any checkbox but still hit Mark Done button
+        #mark item done is not in there
+        def test_POST_zero_items_done(self):
+            current_list = List.objects.create()
+            item1 = Item.objects.create(text="Item 1", list=current_list)
+            item2 = Item.objects.create(text="Item 2", list=current_list)
+
+            response = self.client.post(
+                '/lists/%d/items/' % (current_list.id,),
+                data={}
+            )
+
+            item1 = Item.objects.get(id=item1.id)
+            item2 = Item.objects.get(id=item2.id)
+
+            self.assertFalse(item1.is_done)
+            self.assertFalse(item2.is_done)
+
+        def test_POST_item_toggles_done(self):
+            current_list = List.objects.create()
+            item1 = Item.objects.create(
+                text="Item 1",
+                list=current_list,
+                is_done=True
+                )
+
+            item2 = Item.objects.create(
+                text="Item 2",
+                list=current_list,
+                is_done=False
+            )
+
+            response = self.client.post(
+                '/lists/%d/items/' % (current_list.id,),
+                data={'mark_item_done': [item2.id]}
+            )
+
+            self.assertRedirects(response,'/lists/%d/' % (current_list.id,))
+
+            #Check item is updated
+            item1 = Item.objects.get(id=item1.id)
+            item2 = Item.objects.get(id=item2.id)
+            self.assertFalse(item1.is_done)
+            self.assertTrue(item2.is_done)

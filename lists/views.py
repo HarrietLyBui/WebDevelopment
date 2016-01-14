@@ -5,7 +5,7 @@ from lists.models import Item,List
 # Create your views here.
 #function that does not do anything, makes the resolver happy
 def home_page(request):
-    return render(request, 'home.html')
+    return render(request, 'home.html', {'todo_lists': List.objects.all()})
 
     #if request.method == 'POST':
     #    Item.objects.create(text=request.POST['item_text'])
@@ -48,16 +48,16 @@ def view_list(request, list_id):
 
     if request.method == 'POST':
         if request.POST.has_key('item_text'):
-        try:
-            item = Item(text=request.POST['item_text'], list=list_)
-            item.full_clean()
-            item.save()
-        except ValidationError:
-            error = "You can't have an empty list item"
+            try:
+                item = Item(text=request.POST['item_text'], list=list_)
+                item.full_clean()
+                item.save()
+            except ValidationError:
+                error = "You can't have an empty list item"
 
-    if request.POST.has_key('list_name')
-        list_.name = request.POST('list_name')
-        list_.save()
+        if request.POST.has_key('list_name'):
+            list_.name = request.POST['list_name']
+            list_.save()
 
     return render(request, 'list.html', { 'list':list_, 'error': error })
 
