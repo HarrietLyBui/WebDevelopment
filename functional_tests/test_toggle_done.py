@@ -14,7 +14,7 @@ class ToggleDoneTest(TodoFunctionalTest):
     def check_marked_off(self, todo_text):
         row = self.find_table_row(todo_text)
         try:
-            row.find_elements_by_css_selector('.todo-done')
+            row.find_element_by_css_selector('.todo-done')
         except NoSuchElementException:
             self.fail("'%s' not marked done!" % (todo_text))
 
