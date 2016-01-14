@@ -9,13 +9,15 @@
     <tr><td>{{forloop.counter}}: </td>
       <td><input type="checkbox"
                   name="mark_item_done"
-                  value="{{item.id}}" /></td>
+                  value="{{item.id}}"
+                  {% if item.is_done %} checked="checked" {% endif %}
+                   /></td>
       <td {% if item.is_done %}class="todo-done"{% endif %}>
         {{item.text}}</td>
       <td><a href = "/lists/{{list.id}}/{{item.id}}/delete_item">Delete</a> </td></tr>
     {% endfor %}
   </table>
-  <button id="toggle_done" type="submit"> Mark Done</button>
+  <button id="toggle_done" type="submit" class="btn btn-primary"> Mark Done</button>
     {% csrf_token %}
 </form>
    {% endblock %}
