@@ -98,7 +98,6 @@ class NewListTest(TestCase):
         self.assertEqual(Item.objects.count(),0)
 
     def test_can_save_a_POST_request_to_an_existing_list(self):
-    #    other_list = List.objects.create()
         correct_list = List.objects.create()
 
         self.client.post(
