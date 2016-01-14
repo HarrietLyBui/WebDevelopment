@@ -67,9 +67,14 @@ def delete_item(request, list_id, item_id):
 
 def edit_list(request, list_id):
     list_= List.objects.get(id=list_id)
-    
-    item=Item.objects.get(id=request.POST['mark_item_done'])
-    item.is_done = True
-    item.save()
+
+    item_ids = request.POST.getlist('mark_item_done')
+    #iterate over the list of id
+
+    for item_id in item_ids:
+
+        item=Item.objects.get(id=item_id)
+        item.is_done = True
+        item.save()
 
     return redirect('/lists/%d/' % (list_.id))
