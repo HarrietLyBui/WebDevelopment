@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 
-{% block header_text %} Your To-do list {% endblock %}
+{% block header_text %} To-do
+<form method="POST" action="/lists/{{list.id}}/">
+  <input id="id_rename_list"
+   name="list_name"
+   value="{{list.name}}"
+   class="form-control input-lg"
+   placeholder="List Name"/>
+   {% csrf_token %}
+ </form>
+  {% endblock %}
 {% block form_action %}/lists/{{list.id}}/{% endblock %}
 {% block table %}
 <form id="edit_items" method="POST" action="/lists/{{list.id}}/items/">
@@ -12,7 +21,7 @@
                   value="{{item.id}}"
                   {% if item.is_done %} checked="checked" {% endif %}
                    /></td>
-      <td {% if item.is_done %}class="todo-done"{% endif %}>
+      <td class="content {% if item.is_done %} todo-done {% endif %}">
         {{item.text}}</td>
       <td><a href = "/lists/{{list.id}}/{{item.id}}/delete_item">Delete</a> </td></tr>
     {% endfor %}
