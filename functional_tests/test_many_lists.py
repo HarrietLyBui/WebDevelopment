@@ -20,7 +20,7 @@ class ManyListTest(TodoFunctionalTest):
         self.check_for_row_in_list_table('Groceries')
 
         #Edith creates a new list for her Art History homework
-        self.browser.enter_a_new_item('Read Camille')
+        self.enter_a_new_item('Read Camille')
 
         #Edith opens the homepage later & sees both lists
         self.browser.get(self.live_server_url)
@@ -34,4 +34,6 @@ class ManyListTest(TodoFunctionalTest):
         self.check_for_row_in_list_table('Buy cheese')
 
     def change_list_name(self, list_name):
-        pass
+        inputbox = self.browser.find_element_by_id('id_rename_list')
+        inputbox.clear()
+        inputbox.send_keys(list_name + '\n')
