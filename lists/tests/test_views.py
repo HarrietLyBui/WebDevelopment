@@ -125,7 +125,7 @@ class NewListTest(TestCase):
         self.assertEqual(new_item.list, correct_list)
 
     def test_new_list_has_name_of_first_item(self):
-        self.client.post(
+        response = self.client.post(
             '/lists/new' ,
             data={'item_text': 'A new list item'}
         )
